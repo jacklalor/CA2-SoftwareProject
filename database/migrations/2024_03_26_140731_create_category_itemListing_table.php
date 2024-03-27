@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('category_itemListing', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');;
+
+            $table->foreignId('listing_id');
+            $table->foreign('listing_id')->references('id')->on('itemLisitng')->onUpdate('cascade')->onDelete('cascade');;
+
             $table->timestamps();
         });
     }
