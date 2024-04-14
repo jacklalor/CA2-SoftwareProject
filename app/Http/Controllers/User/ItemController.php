@@ -1,0 +1,184 @@
+<?php
+namespace App\Http\Controllers;
+use App\Models\Item;
+use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
+
+class ItemController extends Controller
+{
+    /**
+     * Display a item of the resource.
+     */
+    public function index()
+    {
+        $items = Item::all();
+        $categories = Category::all();
+
+        return view('item.index',[
+            'items' => $items,
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $categories = Category::all();
+
+        return view('item.create', [
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        
+
+        $rules = [
+            'title' => 'required|string|min:2|max:150', //Checks that the title isnt the same as another title
+            'condition' => 'required|in:New & Unused,"Used, Like New",Small Wear,Major Wear,Parts Only',
+            'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'required|string|min:5|max:1000',
+            'user_id' => 'required|exists:users,id',
+            'item_image' => 'required|file|image'
+        ];
+
+
+        $request->validate($rules);
+        // dd($request);
+
+
+        $listing_image = $request->file('listing_image');
+        $extension = $listing_image->getClientOriginalExtension();
+        $filename = date('y-m-d-His') . '_' .  str_replace(' ', '_', $request->title) . '.' . $extension;
+
+
+        $listing_image->storeAs('public/images', $filename);
+
+        $item = Item::create([
+            'title' => $request->title,
+            'condition' => $request->condition,
+            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'user_id' => $request->user_id,
+            'item_image' => $filename
+        ]);
+
+        return redirect()->route('item.index');
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $item = Item::FindOrFail($id);
+        $item_all = Item::paginate(4);
+        $categories = Category::all();
+
+        return view('item.show', [
+            'item' => $item,
+            'categories' => $categories,
+            'item_all' => $item_all
+        ]);
+
+        
+        
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $item = Item::findOrFail($id);
+    
+        // Check if the authenticated user is the owner of the item
+        if ($item->user_id !== Auth::id()) {
+            // If not, return an unauthorized response or redirect to a different page
+            return redirect()->route('item.index')->with('error', 'You are not authorized to edit this item.');
+        }
+    
+        $categories = Category::all();
+    
+        return view('item.edit', [
+            'item' => $item,
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+
+        $item = Item::findOrFail($id);
+        //validation rules
+
+        $rules = [
+            'title' => 'required|string|min:2|max:150', //Checks that the title isnt the same as another title
+            'condition' => 'required|in:New,Used',
+            'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'required|string|min:5|max:1000',
+            'user_id' => 'required|exists:users,id',
+            'item_image' => 'required|file|image'
+
+        ];
+      
+        $request->validate($rules);
+
+
+        if($request->hasFile('item_image')){
+            $listing_image = $request->file('item_image');
+            $extension = $listing_image->getClientOriginalExtension();
+            $filename = date('y-m-d-His') . '_' .  str_replace(' ', '_', $request->title) . '.' . $extension;
+
+
+            $listing_image->storeAs('public/images', $filename);
+            $item->listing_image = $filename;
+
+        }
+
+        $item->title = $request->title;
+        $item->condition = $request->condition;
+        $item->price = $request->price;
+        $item->description = $request->description;
+        $item->category_id = $request->category_id;
+        $item->user_id = $request->user_id;
+        $item->save();
+
+        return redirect()
+                ->route('item.index')
+                ->with('status', 'Updated item!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $item = Item::findOrFail($id);
+    
+        // Check if the authenticated user is the owner of the item
+        if ($item->user_id !== Auth::id()) {
+            // If not, return an unauthorized response or redirect to a different page
+            return redirect()->route('item.index')->with('error', 'You are not authorized to delete this item.');
+        }
+    
+        $item->delete();
+    
+        return redirect()->route('item.index')->with('status', 'Item deleted successfully');
+    }
+}

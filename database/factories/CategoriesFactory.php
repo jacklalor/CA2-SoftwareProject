@@ -21,6 +21,8 @@ class CategoriesFactory extends Factory
      *
      * @return array
      */
+
+
     public function definition()
     {
         // Define an array of category names
