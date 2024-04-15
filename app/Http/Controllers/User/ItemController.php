@@ -11,6 +11,19 @@ class ItemController extends Controller
     /**
      * Display a item of the resource.
      */
+    public function dashboard(Request $request)
+{
+    $query = $request->input('query');
+
+    $items = Item::where('name', 'like', '%' . $query . '%')->paginate(50);
+    $categories = Category::all();
+
+    return view('dashboard', [
+        'items' => $items,
+        'categories' => $categories,
+    ]);
+}
+
     public function index()
     {
         $items = Item::all();
@@ -42,11 +55,12 @@ class ItemController extends Controller
         
 
         $rules = [
-            'title' => 'required|string|min:2|max:150', //Checks that the title isnt the same as another title
+            'name' => 'required|string|min:2|max:150', //Checks that the title isnt the same as another title
             'condition' => 'required|in:New & Unused,"Used, Like New",Small Wear,Major Wear,Parts Only',
             'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required|string|min:5|max:1000',
+            'sub_description' => 'required|string|min:5|max:30',
             'user_id' => 'required|exists:users,id',
             'item_image' => 'required|file|image'
         ];
@@ -64,11 +78,12 @@ class ItemController extends Controller
         $listing_image->storeAs('public/images', $filename);
 
         $item = Item::create([
-            'title' => $request->title,
+            'name' => $request->name,
             'condition' => $request->condition,
             'price' => $request->price,
             'category_id' => $request->category_id,
             'description' => $request->description,
+            'sub_description' => $request->sub_description,
             'user_id' => $request->user_id,
             'item_image' => $filename
         ]);
@@ -132,6 +147,8 @@ class ItemController extends Controller
             'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required|string|min:5|max:1000',
+            'sub_description' => 'required|string|min:5|max:30',
+
             'user_id' => 'required|exists:users,id',
             'item_image' => 'required|file|image'
 
@@ -151,12 +168,15 @@ class ItemController extends Controller
 
         }
 
-        $item->title = $request->title;
+        $item->name = $request->name;
         $item->condition = $request->condition;
         $item->price = $request->price;
         $item->description = $request->description;
+        $item->sub_description = $request->sub_description;
+
         $item->category_id = $request->category_id;
         $item->user_id = $request->user_id;
+
         $item->save();
 
         return redirect()

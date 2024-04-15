@@ -43,6 +43,13 @@ class UserSeeder extends Seeder
 
         $users = [
             [
+                'name' => 'Example User',
+                'email' => 'user@example.com',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'name' => 'John Doe',
                 'email' => 'john@example.com',
                 'password' => Hash::make('password'),

@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
+            $table->text('sub_description');
+
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
 
             $table->char('price');
             $table->char('condition');
-            $table->char('is_sold');
             $table->foreignId('seller_id');
             $table->foreign('seller_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');;
             $table->timestamps();
