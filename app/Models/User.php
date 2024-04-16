@@ -73,5 +73,4 @@ class User extends Authenticatable
         return $this->hasRole($roles) || abort(403, "You are not unauthorized!");
 
     }
-    
 }

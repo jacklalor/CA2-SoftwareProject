@@ -24,6 +24,35 @@ class ItemController extends Controller
     ]);
 }
 
+        public function showTents()
+    {
+        $category = Category::where('name', 'Tents')->first();
+        $items = $category->items()->paginate(10); // Assuming you have a relationship between Category and Item model
+        return view('user.items.tents', compact('items'));
+    }
+
+    public function showSleeping()
+    {
+        $category = Category::where('name', 'Sleeping')->first();
+        $items = $category->items()->paginate(10); // Assuming you have a relationship between Category and Item model
+        return view('user.items.sleeping', compact('items'));
+    }
+
+    public function showLights()
+    {
+        $category = Category::where('name', 'Lights')->first();
+        $items = $category->items()->paginate(10); // Assuming you have a relationship between Category and Item model
+        return view('user.items.lights', compact('items'));
+    }
+
+    public function showAccessories()
+    {
+        $category = Category::where('name', 'Accessories')->first();
+        $items = $category->items()->paginate(10); // Assuming you have a relationship between Category and Item model
+        return view('user.items.accessories', compact('items'));
+    }
+
+
     public function index()
     {
         $items = Item::all();

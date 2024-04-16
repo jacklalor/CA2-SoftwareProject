@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Seeders\RoleSeeder;
+
+use App\Models\Role;
+use App\Models\User;
+
 
 class UserSeeder extends Seeder
 {
@@ -15,31 +20,19 @@ class UserSeeder extends Seeder
     public function run(): void
     {
 
-        // // Insert sample user data
-        // DB::table('users')->insert([
-        //     'name' => 'John Doe',
-        //     'email' => 'john@example.com',
-        //     'password' => Hash::make('password'),
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        
+        $role_admin = Role::where('name', 'admin')->first();
 
-        // // Insert more sample user data
-        // DB::table('users')->insert([
-        //     'name' => 'Jane Doe',
-        //     'email' => 'jane@example.com',
-        //     'password' => Hash::make('password'),
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        $role_user = Role::where('name', 'user')->first();
 
-        // DB::table('users')->insert([
-        //     'name' => 'Alice Smith',
-        //     'email' => 'alice@example.com',
-        //     'password' => Hash::make('password'),
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        $admin = new User;
+        $admin->name = "Jack Lalor";
+        $admin->email = "admin@caexample.com";
+        $admin->password = "secret123";
+        $admin->save();
+
+        //attach admin role to the user created above
+        $admin->roles()->attach($role_admin);
 
         $users = [
             [
@@ -100,6 +93,14 @@ class UserSeeder extends Seeder
             ],
             // Add more users as needed
         ];
+
+        // Create and attach roles to each user
+        foreach ($users as $userData) {
+            $user = new User;
+            $user->fill($userData)->save();
+            // Attach user role to each user
+            $user->roles()->attach($role_user);
+        }
 
         // Add more users as needed
         foreach ($users as $user) {
