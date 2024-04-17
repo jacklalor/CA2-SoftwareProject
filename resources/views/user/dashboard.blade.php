@@ -14,6 +14,10 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("Welcome to the world's number 1 place for buying and selling festival and camping equipment!") }}
+
+                    
+                    </div>
+
                 </div>
             </div>
         </div>

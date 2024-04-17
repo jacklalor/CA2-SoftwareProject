@@ -27,7 +27,8 @@ class ItemListingSeeder extends Seeder
          'price' => 100.00,
          'description' => 'High-quality 2-man tent in red color.',
          'sub_description' => 'High-quality 2-man tent',
-         'seller_id' => $sellerIds[array_rand($sellerIds)]  
+         'seller_id' => $sellerIds[array_rand($sellerIds)] , 
+         'image_url' => 'red2man.jpg'
         ]);
 
         Item::create([
