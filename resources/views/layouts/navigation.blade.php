@@ -28,6 +28,10 @@
                         {{ __('Lights') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('user.items.cooking')" :active="request()->routeIs('dashboard')">
+                        {{ __('Cooking') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="route('user.items.accessories')" :active="request()->routeIs('dashboard')">
                         {{ __('Accessories') }}
                     </x-nav-link>

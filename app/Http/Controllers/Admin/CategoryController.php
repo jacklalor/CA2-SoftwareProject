@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller; // Add this line
+
 use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -9,24 +12,13 @@ class CategoryController extends Controller
 {
     public function index()
     {
+        $items = Item::all();
         $categories = Category::all();
 
-        return view('category.index',[
+        return view('admin.categories.index',[
+            'items' => $items,
             'categories' => $categories
         ]);
-
-         //Auth::admin()->authorizeRoles('admin');
-         if(!Auth::user()->hasRole('admin')){
-            return to_route('admin.categories.index');
-           
-        }
-
-   $categories = Category::orderBy('created_at', 'desc')->paginate(8); // retrieves categories from the database, orders them by the creation timestamp in descending order, and then paginates the results with 8 categories per page. 
-
-   return view('admin.categories.index', [ // Load and render the admin.categories.index view, and pass along the data from the $categories variable so that it can be used within the view.
-       'categories' => $albums
-   ]);
-
     }
     
    
@@ -34,11 +26,14 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+
+    public function show($id)
     {
+        // Fetch the category from the database by its ID
+        $category = Category::findOrFail($id);
         
-        $category = Category::FindOrFail($id);
-        return view('admin.categories.show')->with('album', $album);
+        // Return a view to display the category
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -89,11 +84,17 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::findOrFail($id);
+        $categories = Category::findOrFail($id);
 
         $category->delete();
 
         return redirect()->route('admin.categories.index')->with('status', 'category deleted successfully');
     }
+
+    public function create()
+{
+    $categories = Category::all(); // Assuming you're retrieving categories from the database
+    return view('admin.categories.create', ['categories' => $categories]);
+}
 
 }

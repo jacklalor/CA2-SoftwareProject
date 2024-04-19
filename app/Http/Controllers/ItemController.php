@@ -24,6 +24,7 @@ class ItemController extends Controller
     // Retrieve all tents from the database
     $tents = Item::where('category_id', $yourTentCategoryId)->get();
 
+
     // Pass the tents data to the view for display
     return view('user.tents.display', compact('tents'));
 }
@@ -50,14 +51,33 @@ public function showLights()
     return view('user.lights.display', compact('lights'));
 }
 
+public function showCooking()
+{
+    $yourCookingCategoryId = 4;
+
+    // Retrieve all tents from the database
+    $cooking = Item::where('category_id', $yourCookingCategoryId)->get();
+
+    // Pass the tents data to the view for display
+    return view('user.cooking.display', compact('cooking'));
+}
+
 public function showAccessories()
 {
-    $yourAccessoriesCategoryId = 4;
+    $yourAccessoriesCategoryId = 5;
 
     // Retrieve all tents from the database
     $accessories = Item::where('category_id', $yourAccessoriesCategoryId)->get();
 
     // Pass the tents data to the view for display
     return view('user.accessories.display', compact('accessories'));
+}
+public function create()
+{
+    $items = Item::all();
+
+    return view('admin.items.create', [
+        'items' => $items,
+    ]);
 }
 }

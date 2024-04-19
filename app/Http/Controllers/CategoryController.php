@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Category;
+use App\Models\Item;
 
 use Illuminate\Http\Request;
 
@@ -20,6 +22,6 @@ class CategoryController extends Controller
         $category = Category::with('items')->find($id);
 
         // Return the category and its items to the view
-        return view('categories.show', compact('category'));
+        return view('admin.categories.show', compact('category'));
     }
 }

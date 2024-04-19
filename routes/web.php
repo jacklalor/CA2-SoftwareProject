@@ -21,6 +21,8 @@ Route::get('/user/profile/edit', [ProfileController::class, 'edit'])->name('user
 Route::get('/user/items/tents', [ItemController::class, 'showTents'])->name('user.items.tents');
 Route::get('/user/items/sleeping', [ItemController::class, 'showSleeping'])->name('user.items.sleeping');
 Route::get('/user/items/lights', [ItemController::class, 'showLights'])->name('user.items.lights');
+Route::get('/user/items/cooking', [ItemController::class, 'showCooking'])->name('user.items.cooking');
+
 Route::get('/user/items/accessories', [ItemController::class, 'showAccessories'])->name('user.items.accessories');
 
 
@@ -28,7 +30,27 @@ Route::get('/user/items/accessories', [ItemController::class, 'showAccessories']
 Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
 Route::get('/admin/profile/edit', [ProfileController::class, 'edit'])->name('admin.profile.edit');
 Route::get('/admin/items/index', [AdminItemController::class, 'index'])->name('admin.items.index');
+Route::get('/admin/items/create', [AdminItemController::class, 'create'])->name('admin.items.create');
+Route::get('/admin/items/show', [AdminItemController::class, 'show'])->name('admin.items.show');
+Route::get('/admin/items/edit/{id}', [AdminItemController::class, 'create'])->name('admin.items.edit');
+
+
+
+Route::get('/admin/items/store', [AdminItemController::class, 'store'])->name('admin.items.store');
+
 Route::get('/admin/categories/index', [AdminItemController::class, 'index'])->name('admin.categories.index');
+Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
+Route::get('/admin/categories/create', [AdminItemController::class, 'create'])->name('admin.categories.create');
+Route::get('/admin/categories/edit', [AdminItemController::class, 'edit'])->name('admin.categories.edit');
+Route::delete('/admin/categories/{id}', [AdminCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
+Route::get('/admin/categories/create', [AdminItemController::class, 'create'])->name('admin.categories.create');
+
+
+Route::get('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@show')->name('admin.categories.show');
+
+Route::get('/admin/categories/show', [AdminItemController::class, 'show'])->name('admin.categories.show');
+
 
 
 
@@ -44,12 +66,25 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+    Route::get('/admin/categories/show', function () {
+        return view('admin.categories.show');
+    })->name('admin.categories.show');
+    Route::get('/admin/categories/edit', function () {
+        return view('admin.categories.edit');
+    })->name('admin.categories.edit');
+    Route::get('/admin/categories/destroy', function () {
+        return view('admin.categories.destroy');
+    })->name('admin.categories.destroy');
 
     // Admin items routes
     Route::resource('/admin/items', AdminItemController::class);
 
     // Admin categories routes
-    Route::resource('/admin/categories', AdminCategoryController::class);
+    Route::resource('/admin/categories/index', AdminCategoryController::class);
+    Route::resource('/admin/categories/show', AdminCategoryController::class);
+    Route::resource('/admin/categories/destroy', AdminCategoryController::class);
+
+
 
     // Other admin routes can be defined here
     Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
