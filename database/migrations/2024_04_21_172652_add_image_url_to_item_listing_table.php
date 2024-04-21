@@ -1,18 +1,25 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddItemImageToItemTable extends Migration
+class AddImageUrlToItemListingTable extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::table('item_listing', function (Blueprint $table) {
-            $table->string('image_url')->nullable();
+            $table->string('image_url')->nullable()->after('seller_id');
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('item_listing', function (Blueprint $table) {
             $table->dropColumn('image_url');

@@ -16,23 +16,23 @@
                         {{ __('Home') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('user.items.tents')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('user.items.tents')" :active="request()->routeIs('tents')">
                         {{ __('Tents') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('user.items.sleeping')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('user.items.sleeping')" :active="request()->routeIs('sleeping')">
                         {{ __('Sleeping') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('user.items.lights')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('user.items.lights')" :active="request()->routeIs('lights')">
                         {{ __('Lights') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('user.items.cooking')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('user.items.cooking')" :active="request()->routeIs('cooking')">
                         {{ __('Cooking') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('user.items.accessories')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('user.items.accessories')" :active="request()->routeIs('accessories')">
                         {{ __('Accessories') }}
                     </x-nav-link>
                 </div>

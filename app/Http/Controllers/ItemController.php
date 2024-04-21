@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Category;
+
+
 
 
 class ItemController extends Controller
@@ -12,9 +16,9 @@ class ItemController extends Controller
     {
         $item = Item::find($id);
         $categories = $item->categories;
-
+        
         // Return the item and its categories to the view
-        return view('items.show', compact('item', 'categories'));
+        return view('admin.items.show', compact('item', 'categories'));
     }
 
     public function showTents()
@@ -72,12 +76,65 @@ public function showAccessories()
     // Pass the tents data to the view for display
     return view('user.accessories.display', compact('accessories'));
 }
-public function create()
-{
-    $items = Item::all();
 
-    return view('admin.items.create', [
-        'items' => $items,
+public function store(Request $request)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'name' => 'required|string|min:2|max:150',
+        'description' => 'required|string|min:10|max:150',
+        'sub_description' => 'required|string|min:10|max:30',
+        'condition' => 'required|string|min:2|max:150',
+        'category_id' => 'required',
+        'price' => 'required|int|min:1|max:1000',
+        'item_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
+
+    // Check if file was uploaded
+    if ($request->hasFile('item_url')) {
+        $item_url = $request->file('item_url');
+
+        // Check if the file is valid
+        if ($item_url->isValid()) {
+            $extension = $item_url->getClientOriginalExtension();
+            $filename = date('Y-m-d-His') . '.' . $extension;
+
+            // Store the image
+            $item_url->storeAs('public/images', $filename);
+
+            // Create a new item instance
+            $item = new Item;
+            $item->name = $request->name;
+            $item->description = $request->description;
+            $item->sub_description = $request->sub_description;
+            $item->condition = $request->condition;
+            $item->price = $request->price;
+            $item->item_url = $filename;
+            $item->save();
+
+            // Redirect the user to the admin items index page
+            return redirect()->route('admin.items.index')->with('success', 'Item created successfully.');
+        } else {
+            // Handle invalid file
+            return redirect()->back()->withErrors(['item_url' => 'Invalid image file.']);
+        }
+    } else {
+        // Handle case where no file is uploaded
+        return redirect()->back()->withErrors(['item_url' => 'Please upload an image file.']);
+    }
+
 }
+
+
+
+
+
+// public function create()
+// {
+//     $items = Item::all();
+
+//     return view('admin.items.create', [
+//         'items' => $items,
+//     ]);
+// }
 }

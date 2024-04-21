@@ -53,8 +53,7 @@
                     <!-- Feature 2 -->
                     <div class="flex flex-col items-center justify-center">
                         <svg class="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10V3L4 14h5v7l5-11H4l5-11v7h5l-5 11v-7z" />
                         </svg>
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-4 mb-2">Trade with Ease</h3>
                         <p class="text-gray-700 dark:text-gray-300 text-center">Effortlessly buy, sell, or trade festival gear items with other users.</p>

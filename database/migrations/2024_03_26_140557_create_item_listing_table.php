@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,12 +16,17 @@ return new class extends Migration
             $table->text('description');
             $table->text('sub_description');
 
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            // Define foreign key constraint for category_id
+            $table->foreignId('category_id')->default(1)->constrained()->onDelete('cascade');
 
             $table->char('price');
             $table->char('condition');
-            $table->foreignId('seller_id');
-            $table->foreign('seller_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');;
+
+            // Define foreign key constraint for seller_id
+            $table->foreignId('seller_id')->default(1)->constrained('users')->onDelete('cascade');
+
+            $table->string('item_url')->nullable(); // Add this line to create the item_url column
+
             $table->timestamps();
         });
     }

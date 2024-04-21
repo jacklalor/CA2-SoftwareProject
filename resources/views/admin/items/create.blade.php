@@ -12,8 +12,7 @@
         </ul>
     </div>
 @endif --}}
-
-<form enctype="multipart/form-data"action="{{ route('admin.items.store') }}" method="post">
+<form method="POST" action="{{ route('admin.items.store') }}" enctype="multipart/form-data">
     @csrf
     <div>
         <label for="">Name</label>
@@ -31,6 +30,20 @@
                         class="w-full mt-6"
                         :value="@old('description')"></textarea>
 
+                        <textarea
+                        name="sub_description"
+                        rows="10"
+                        field="sub_description"
+                        placeholder="Sub_Description..."
+                        class="w-full mt-6"
+                          :value="@old('sub_description')"></textarea>
+
+                          <div>
+                            <!-- Example of how the condition field might be included in your form -->
+<input type="text" name="condition" value="{{ old('condition') }}" />
+
+                    
+                        </div>
                         
 
     <div class="form-group">
@@ -47,7 +60,7 @@
             @enderror
         </div>
 
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label for="item">item</label>
         <select name="item_id">
 
@@ -58,7 +71,7 @@
 
             @endforeach
         </select>
-     </div>
+     </div> --}}
 
      <div>
         <label for="price">Price</label>
@@ -69,13 +82,13 @@
     </div>
     
 
-    <input
-                        type="file"
-                        name="item_image"
-                        placeholder="Item image"
-                        class="w-full mt-6"
-                        field="item_image"
-                        >
+    <div>
+        <label for="item_url">Item Image</label>
+        <input type="file" name="item_url" id="item_url" accept="image/*">
+        @error('item_url')
+            <span>{{ $message }}</span>
+        @enderror
+    </div>
                     
                     
     <!-- edited the create button using tailwind css -->

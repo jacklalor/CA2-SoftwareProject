@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -11,6 +10,8 @@ use App\Http\Controllers\User\ItemController as UserItemController;
 use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
+
+// Route::post('/admin/items/create', [AdminItemController::class, 'create'])->name('admin.items.create');
 
 // Public routes accessible to all users
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,8 +32,13 @@ Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
 Route::get('/admin/profile/edit', [ProfileController::class, 'edit'])->name('admin.profile.edit');
 Route::get('/admin/items/index', [AdminItemController::class, 'index'])->name('admin.items.index');
 Route::get('/admin/items/create', [AdminItemController::class, 'create'])->name('admin.items.create');
-Route::get('/admin/items/show', [AdminItemController::class, 'show'])->name('admin.items.show');
-Route::get('/admin/items/edit/{id}', [AdminItemController::class, 'create'])->name('admin.items.edit');
+// Route::get('/admin/items/show', [AdminItemController::class, 'show'])->name('admin.items.show');
+Route::get('/admin/items/show/{id}', [AdminItemController::class, 'show'])->name('admin.items.show');
+
+// Route::get('/admin/items/edit/{id}', [AdminItemController::class, 'create'])->name('admin.items.edit');
+Route::post('/admin/items/store', [ItemController::class, 'store'])->name('admin.items.store');
+Route::post('admin/items', [ItemController::class, 'store'])->name('admin.items.store');
+
 
 
 
@@ -75,9 +81,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/categories/destroy', function () {
         return view('admin.categories.destroy');
     })->name('admin.categories.destroy');
+    Route::get('/admin/items/show', function () {
+        return view('admin.items.show');
+    })->name('admin.items.show');
 
     // Admin items routes
-    Route::resource('/admin/items', AdminItemController::class);
+    // Route::resource('/admin/items', AdminItemController::class);
 
     // Admin categories routes
     Route::resource('/admin/categories/index', AdminCategoryController::class);
@@ -96,6 +105,8 @@ Route::get('/items/tents', [UserItemController::class, 'showTents'])->name('item
 Route::get('/items/sleeping', [UserItemController::class, 'showSleeping'])->name('item.sleeping');
 Route::get('/items/lights', [UserItemController::class, 'showLights'])->name('item.lights');
 Route::get('/items/accessories', [UserItemController::class, 'showAccessories'])->name('item.accessories');
+
+// Route::get('/admin/items/{id}', [ItemController::class, 'show']);
 
 // Individual item route
 Route::get('/items/{id}', function ($id) {

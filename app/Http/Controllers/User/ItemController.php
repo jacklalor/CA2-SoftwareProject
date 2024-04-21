@@ -1,5 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
+
+
+use App\Http\Controllers\Controller;
+
 use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +55,14 @@ class ItemController extends Controller
         $items = $category->items()->paginate(10); // Assuming you have a relationship between Category and Item model
         return view('user.items.accessories', compact('items'));
     }
+
+    public function showCooking()
+    {
+        $category = Category::where('name', 'Cooking')->first();
+        $items = $category->items()->paginate(10); // Assuming you have a relationship between Category and Item model
+        return view('user.items.cooking', compact('items'));
+    }
+
 
 
     public function index()
