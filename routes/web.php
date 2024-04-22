@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 // Route::post('/admin/items/create', [AdminItemController::class, 'create'])->name('admin.items.create');
 
 // Public routes accessible to all users
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 Route::get('/user/home', [HomeController::class, 'index'])->name('user.home');
 

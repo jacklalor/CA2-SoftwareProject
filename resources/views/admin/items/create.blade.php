@@ -40,6 +40,7 @@
 
                           <div>
                             <!-- Example of how the condition field might be included in your form -->
+                            <label for="condition">Condition</label>
 <input type="text" name="condition" value="{{ old('condition') }}" />
 
                     
